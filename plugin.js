@@ -73,9 +73,8 @@ window.RochePlugin.register({
                   <label>2. 占卜所求</label>
                   <select id="divine-type">
                     <option value="射覆">🔮 射覆 (对方猜你身边的物品)</option>
-                    <option value="运势">🌟 近期运势 (吉凶祸福)</option>
-                    <option value="桃花">🌸 桃花姻缘 (情感羁绊)</option>
-                    <option value="财运">💰 财运走势 (正财偏财)</option>
+                    <option value="测字">🀄 测字 (拆解你心中的一字)</option>
+                    <option value="解梦">🌙 解梦 (窥探你潜意识的梦境)</option>
                   </select>
                 </div>
               </div>
@@ -194,11 +193,26 @@ window.RochePlugin.register({
               shortTermCtx = shortTerm.map(m => `${m.senderName}: ${m.text}`).join('\n');
             }
             if (sessionState.divineType === "射覆") {
-              sessionState.systemPrompt = `【当前模式】：射覆（猜物游戏）\n【角色设定】：你正在扮演 ${sessionState.charName}，你的性格、说话口癖要严格按照你本身的设定来！即使在猜物，也要用你的口吻说话！\n【信士命理】：${userBio}\n【羁绊设定】：${charBio}\n【规则】：信士(${sessionState.userName})此时在现实中看着或藏着一个物品。你需要利用易经八卦理论向用户提问（如问颜色、形状），并逐步推理猜出物品。\n${LORE}\n【绝对禁止】：不要带任何前缀或人名！回复简短！\n请主动向用户打招呼，抛出第一个试探性问题。`;
-            } else if(false) {
-              sessionState.systemPrompt = `【当前模式】：射覆（猜物游戏）\n【规则】：信士(${sessionState.userName})此时在现实中看着或藏着一个物品。你需要利用易经八卦理论向用户提问（如问颜色、形状），并逐步推理猜出物品。\n${LORE}\n【绝对禁止】：不要带任何前缀或人名！回复简短！\n请主动向用户打招呼，抛出第一个试探性问题。`;
-            } else {
-              sessionState.systemPrompt = `【当前模式】：${sessionState.divineType} 占卜\n【所测之人】：信士(${sessionState.userName}) 与 羁绊对象(${sessionState.charName})\n【信士命理】：${userBio}\n【羁绊设定】：${charBio}\n【核心因果】：${memoryContext}\n【近期动态】：\n${shortTermCtx}\n\n${LORE}\n【绝对禁止】：不要带任何前缀或人名！回复简短！每次只说一两句话。\n请根据上述因果，先打招呼并起卦给出初步断言，引导信士追问。`;
+              sessionState.systemPrompt = `【当前模式】：射覆（猜物游戏）
+【角色设定】：你是 ${sessionState.charName}，你的性格、说话口癖要严格按照你本身的设定来！即使在猜物，也要用你的口吻说话！
+【信士】：${sessionState.userName}
+【规则】：信士看着或藏着一个物品。你要用八卦理论提问（如颜色、形状）逐步推理。
+【绝对禁止】：不要带前缀！回复简短！
+请主动打招呼，抛出第一个试探性问题。`;
+            } else if (sessionState.divineType === "测字") {
+              sessionState.systemPrompt = `【当前模式】：测字（拆字断机）
+【角色设定】：你是 ${sessionState.charName}，严格按照本身设定口吻说话！
+【信士】：${sessionState.userName}
+【规则】：要求信士随意给出一个汉字。然后你通过拆解该字的字形、偏旁、谐音，结合玄理或你们的因果，来推断信士当下的心境或吉凶。
+【绝对禁止】：不要带前缀！每次只说一两句！
+请主动打招呼，让信士报上一个字。`;
+            } else if (sessionState.divineType === "解梦") {
+              sessionState.systemPrompt = `【当前模式】：解梦（梦境解析）
+【角色设定】：你是 ${sessionState.charName}，严格按照本身设定口吻说话！
+【信士】：${sessionState.userName}
+【规则】：询问信士最近做的一个梦。结合潜意识与玄学，为其分析梦境背后的隐喻或现实预兆。
+【绝对禁止】：不要带前缀！每次只说一两句！
+请主动打招呼，让信士描述梦境。`;
             }
             sessionState.messages = [];
             ui.chatBox.innerHTML = "";
