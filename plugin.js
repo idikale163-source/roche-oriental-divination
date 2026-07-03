@@ -261,12 +261,20 @@ window.RochePlugin.register({
           }
           ui.btnSave.disabled = true;
           ui.btnSave.textContent = "正在铭记...";
-          const lastAIMsg = [...sessionState.messages].reverse().find(m => m.role === 'assistant')?.content || "推演结束。";
-          const shortDesc = lastAIMsg.substring(0, 80) + (lastAIMsg.length > 80 ? "..." : "");
           try {
+          let memorySummary = `[玄灵阁占卜] ${sessionState.userName}与${sessionState.charName}进行了一次${sessionState.divineType}推演。`;
+          try {
+            const sumResult = await roche.ai.chat({
+              messages: [...sessionState.messages, { role: "user", content: "请用一两句话，客观地总结我们刚才这次推演的最终结论或找出的物品。不要带任何前缀，不要寒暄。" }],
+              temperature: 0.3
+            });
+            memorySummary += `结论：${sumResult.text.trim()}`;
+          } catch (e) {
+            memorySummary += `部分过程丢失，推演结束。`;
+          }
             await roche.memory.write({
               conversationId: sessionState.conversationId,
-              summaryText: `[玄灵阁占卜] ${sessionState.userName}与${sessionState.charName}进行了一次${sessionState.divineType}推演。大师卦象结论：${shortDesc}`,
+              summaryText: memorySummary,
               who: [sessionState.userName, sessionState.charName],
               action: `在玄灵阁进行了${sessionState.divineType}推演`,
               when: "刚刚",
