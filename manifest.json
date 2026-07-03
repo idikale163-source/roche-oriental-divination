@@ -1,0 +1,17 @@
+{
+  "id": "sully-oriental-divination",
+  "name": "玄灵阁",
+  "version": "1.0.0",
+  "description": "东方玄学多轮推演占卜。支持射覆、运势、桃花、财运。可将天机结论直接写入角色的主事实记忆。",
+  "author": "Sully",
+  "entry": "https://raw.githubusercontent.com/idikale163-source/roche-oriental-divination/main/plugin.js",
+  "hash": "",
+  "permissions": [
+    "persona:read",
+    "character:read",
+    "memory:read",
+    "memory:write",
+    "ai:chat",
+    "ui"
+  ]
+}
