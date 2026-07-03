@@ -42,7 +42,7 @@ window.RochePlugin.register({
             .divine-chat-box { flex: 1; overflow-y: auto; background: #FFF9F2; border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 12px; margin-bottom: 10px; }
             .divine-bubble { max-width: 85%; padding: 10px 14px; border-radius: 8px; font-size: 15px; line-height: 1.5; white-space: pre-wrap; word-break: break-word; }
             .divine-bubble.user { align-self: flex-end; background: #E8E2D5; color: #2B2B2B; border-bottom-right-radius: 0; }
-            .divine-bubble.ai { align-self: flex-start; background: var(--accent-color); color: #FFF; border-bottom-left-radius: 0; }
+            .divine-bubble.ai { align-self: flex-start; background: #FFFFFF; color: #2B2B2B; border: 1px solid var(--accent-color); border-bottom-left-radius: 0; box-shadow: 2px 2px 0px rgba(140, 34, 24, 0.1); }
             .divine-bubble.system { align-self: center; background: transparent; color: #888; font-size: 12px; text-align: center; }
             .divine-input-area { display: flex; gap: 8px; flex-shrink: 0; margin-bottom: 10px; }
             .divine-input-area input { flex: 1; padding: 12px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 16px; }
@@ -261,20 +261,12 @@ window.RochePlugin.register({
           }
           ui.btnSave.disabled = true;
           ui.btnSave.textContent = "正在铭记...";
+          const lastAIMsg = [...sessionState.messages].reverse().find(m => m.role === 'assistant')?.content || "推演结束。";
+          const shortDesc = lastAIMsg.substring(0, 80) + (lastAIMsg.length > 80 ? "..." : "");
           try {
-          let memorySummary = `[玄灵阁占卜] ${sessionState.userName}与${sessionState.charName}进行了一次${sessionState.divineType}推演。`;
-          try {
-            const sumResult = await roche.ai.chat({
-              messages: [...sessionState.messages, { role: "user", content: "请用一两句话，客观地总结我们刚才这次推演的最终结论或找出的物品。不要带任何前缀，不要寒暄。" }],
-              temperature: 0.3
-            });
-            memorySummary += `结论：${sumResult.text.trim()}`;
-          } catch (e) {
-            memorySummary += `部分过程丢失，推演结束。`;
-          }
             await roche.memory.write({
               conversationId: sessionState.conversationId,
-              summaryText: memorySummary,
+              summaryText: `[玄灵阁占卜] ${sessionState.userName}与${sessionState.charName}进行了一次${sessionState.divineType}推演。大师卦象结论：${shortDesc}`,
               who: [sessionState.userName, sessionState.charName],
               action: `在玄灵阁进行了${sessionState.divineType}推演`,
               when: "刚刚",
