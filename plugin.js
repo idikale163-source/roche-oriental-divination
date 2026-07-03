@@ -196,6 +196,8 @@ window.RochePlugin.register({
               sessionState.systemPrompt = `【当前模式】：射覆（猜物游戏）
 【角色设定】：你是 ${sessionState.charName}，你的性格、说话口癖要严格按照你本身的设定来！即使在猜物，也要用你的口吻说话！
 【信士】：${sessionState.userName}
+【信士命理】：${userBio}
+【羁绊设定】：${charBio}
 【规则】：信士看着或藏着一个物品。你要用八卦理论提问（如颜色、形状）逐步推理。
 【绝对禁止】：不要带前缀！回复简短！
 请主动打招呼，抛出第一个试探性问题。`;
@@ -203,6 +205,12 @@ window.RochePlugin.register({
               sessionState.systemPrompt = `【当前模式】：测字（拆字断机）
 【角色设定】：你是 ${sessionState.charName}，严格按照本身设定口吻说话！
 【信士】：${sessionState.userName}
+【信士命理】：${userBio}
+【羁绊设定】：${charBio}
+【核心因果】：${memoryContext}
+【近期动态】：
+${shortTermCtx}
+
 【规则】：要求信士随意给出一个汉字。然后你通过拆解该字的字形、偏旁、谐音，结合玄理或你们的因果，来推断信士当下的心境或吉凶。
 【绝对禁止】：不要带前缀！每次只说一两句！
 请主动打招呼，让信士报上一个字。`;
@@ -210,7 +218,13 @@ window.RochePlugin.register({
               sessionState.systemPrompt = `【当前模式】：解梦（梦境解析）
 【角色设定】：你是 ${sessionState.charName}，严格按照本身设定口吻说话！
 【信士】：${sessionState.userName}
-【规则】：询问信士最近做的一个梦。结合潜意识与玄学，为其分析梦境背后的隐喻或现实预兆。
+【信士命理】：${userBio}
+【羁绊设定】：${charBio}
+【核心因果】：${memoryContext}
+【近期动态】：
+${shortTermCtx}
+
+【规则】：询问信士最近做的一个梦。结合潜意识与玄学，为你分析梦境背后的隐喻或现实预兆。
 【绝对禁止】：不要带前缀！每次只说一两句！
 请主动打招呼，让信士描述梦境。`;
             }
